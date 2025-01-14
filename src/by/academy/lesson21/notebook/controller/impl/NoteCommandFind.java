@@ -18,7 +18,7 @@ public class NoteCommandFind implements Command {
         List<Note> notes;
 
         if (params.length > 2) {
-            if (params[1].isEmpty()) {
+            if (!params[1].isEmpty()) {
                 notes = logic.find(params[1]);
             } else {
                 notes = logic.find(LocalDate.parse(params[2]));
@@ -27,7 +27,8 @@ public class NoteCommandFind implements Command {
             return "Неверное количество параметров.";
         }
         if (!notes.isEmpty()) {
-            return notes.toString();
+            return notes.toString().replaceAll(", Note", "\n")
+                    .replaceAll("Note", "");
         } else {
             return "Ничего не найдено.";
         }

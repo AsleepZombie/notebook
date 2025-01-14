@@ -3,6 +3,7 @@ package by.academy.lesson21.notebook.entity;
 import by.academy.lesson21.notebook.util.IdGenerator;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Note {
@@ -73,10 +74,9 @@ public class Note {
     @Override
     public String toString() {
         return "Note{" +
-                "id='" + id + '\'' +
-                ", header='" + header + '\'' +
+                "header='" + header + '\'' +
                 ", text='" + text + '\'' +
-                ", creationDate=" + creationDate +
+                ", creationDate=" + creationDate.format(DateTimeFormatter.ISO_LOCAL_DATE) +
                 '}';
     }
 

@@ -16,7 +16,7 @@ public class NoteCommandDelete implements Command {
     public String execute(String[] params) {
 
         if (params.length > 1) {
-            logic.delete(params[1]);
+            logic.delete(Integer.parseInt(params[1]));
         } else {
             return "Неверное количество параметров.";
         }

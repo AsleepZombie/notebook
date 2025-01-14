@@ -15,10 +15,10 @@ public class NoteCommandUpdate implements Command {
 
         switch (params.length) {
             case 3:
-                logic.updateById(params[1], params[2]);
+                logic.updateByIndex(Integer.parseInt(params[1]), params[2]);
                 break;
             case 4:
-                logic.updateById(params[1], params[2], params[3]);
+                logic.updateByIndex(Integer.parseInt(params[1]), params[3], params[2]);
                 break;
             default:
                 return "Неверное количество параметров.";

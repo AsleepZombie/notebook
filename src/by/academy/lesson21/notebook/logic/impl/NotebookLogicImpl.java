@@ -43,9 +43,7 @@ public class NotebookLogicImpl implements NotebookLogic {
         List<Note> notes = dao.allNotes();
         for (Note noteToUpdate : notes) {
             if (noteToUpdate.getId().equals(id)) {
-                dao.delete(notes.indexOf(noteToUpdate));
                 noteToUpdate.setText(text);
-                dao.add(noteToUpdate);
             }
         }
     }
@@ -55,11 +53,26 @@ public class NotebookLogicImpl implements NotebookLogic {
         List<Note> notes = dao.allNotes();
         for (Note noteToUpdate : notes) {
             if (noteToUpdate.getId().equals(id)) {
-                dao.delete(notes.indexOf(noteToUpdate));
                 noteToUpdate.setHeader(header);
                 noteToUpdate.setText(text);
-                dao.add(noteToUpdate);
             }
+        }
+    }
+
+    @Override
+    public void updateByIndex(int index, String text) {
+        if (index >= 0 && index + 1 <= dao.allNotes().size()) {
+            Note note = dao.allNotes().get(index);
+            note.setText(text);
+        }
+    }
+
+    @Override
+    public void updateByIndex(int index, String header, String text) {
+        if (index >= 0 && index + 1 <= dao.allNotes().size()) {
+            Note note = dao.allNotes().get(index);
+            note.setHeader(header);
+            note.setText(text);
         }
     }
 
@@ -70,6 +83,13 @@ public class NotebookLogicImpl implements NotebookLogic {
             if (noteToUpdate.getId().equals(id)) {
                 dao.delete(notes.indexOf(noteToUpdate));
             }
+        }
+    }
+
+    @Override
+    public void delete(int index) {
+        if (index >= 0 && index + 1 <= dao.allNotes().size()) {
+            dao.delete(index);
         }
     }
 

@@ -19,7 +19,8 @@ public class NoteCommandShow implements Command {
         notes = logic.getAllNotes();
 
         if (!notes.isEmpty()) {
-            return notes.toString();
+            return notes.toString().replaceAll(", Note", "\n")
+                    .replaceAll("Note", "");
         } else {
             return "Пусто.";
         }

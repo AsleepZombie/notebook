@@ -5,6 +5,7 @@ import by.academy.lesson21.notebook.util.ParamHelper;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class FileNoteBookSource {
         return notes;
     }
 
-    public static int count() {
+    public static int size() {
         return notes.size();
     }
 

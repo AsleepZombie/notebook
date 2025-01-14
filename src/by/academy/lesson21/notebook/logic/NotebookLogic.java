@@ -21,7 +21,13 @@ public interface NotebookLogic {
 
     public void updateById(String id, String header, String text);
 
+    public void updateByIndex(int index, String text);
+
+    public void updateByIndex(int index, String header, String text);
+
     public void delete(String id);
+
+    public void delete(int index);
 
     public List<Note> find(String text);
 
