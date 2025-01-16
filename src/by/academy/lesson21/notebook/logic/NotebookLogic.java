@@ -1,39 +1,20 @@
 package by.academy.lesson21.notebook.logic;
 
-import by.academy.lesson21.notebook.entity.Note;
-
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 public interface NotebookLogic {
 
-    public void add(Note note);
+    public String add(String header, String text, String date);
 
-    public void add(String text);
+    public String updateByIndex(String number, String header, String text);
 
-    public void add(String header, String text);
+    public String delete(String number);
 
-    public void add(String header, String text, LocalDateTime creationDate);
+    public String find(String text);
 
-    public void updateById(String id, String text);
+    public String find(LocalDate date);
 
-    public void updateById(String id, String header, String text);
+    public String getAllNotes();
 
-    public void updateByIndex(int index, String text);
-
-    public void updateByIndex(int index, String header, String text);
-
-    public void delete(String id);
-
-    public void delete(int index);
-
-    public List<Note> find(String text);
-
-    public List<Note> find(LocalDate date);
-
-    public List<Note> getAllNotes();
-
-    public void save() throws IOException;
+    public String save();
 }

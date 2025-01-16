@@ -3,10 +3,8 @@ package by.academy.lesson21;
 import by.academy.lesson21.notebook.controller.Controller;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.Buffer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -39,13 +37,13 @@ public class Main {
                 case '3' -> {
                     request = "delete";
                     System.out.print("Введите номер записи для удаления: ");
-                    request += "\n" + (Integer.parseInt(reader.readLine()) - 1);
+                    request += "\n" + reader.readLine();
                     System.out.println(controller.readAndExecute(request));
                 }
                 case '4' -> {
                     request = "update";
                     System.out.print("Введите номер записи для изменения: ");
-                    request += "\n" + (Integer.parseInt(reader.readLine()) - 1);
+                    request += "\n" + reader.readLine();
                     System.out.print("Введите текст: ");
                     request += "\n" + reader.readLine();
                     System.out.print("Введите заголовок: ");
@@ -55,7 +53,7 @@ public class Main {
                 case '5' -> {
                     request = "find";
                     System.out.print("1 - поиск по тексту, ");
-                    System.out.print("2 - поиск по дате, ");
+                    System.out.print("2 - поиск по дате");
                     result = reader.readLine().toLowerCase().charAt(0);
                     if (result == '1') {
                         System.out.print("Введите текст: ");

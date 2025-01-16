@@ -5,9 +5,9 @@ import by.academy.lesson21.notebook.dao.NoteBookDao;
 import by.academy.lesson21.notebook.entity.Note;
 import by.academy.lesson21.notebook.logic.NotebookLogic;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,85 +16,56 @@ public class NotebookLogicImpl implements NotebookLogic {
     private final NoteBookDao dao = provider.getNoteBookDao();
 
     @Override
-    public void add(Note note) {
-        dao.add(note);
-    }
+    public String add(String header, String text, String date) {
+        LocalDateTime creationDate;
+        Note note;
 
-    @Override
-    public void add(String text) {
-        Note note = new Note(text);
-        dao.add(note);
-    }
-
-    @Override
-    public void add(String header, String text) {
-        Note note = new Note(header, text);
-        dao.add(note);
-    }
-
-    @Override
-    public void add(String header, String text, LocalDateTime creationDate) {
-        Note note = new Note(header, text, creationDate);
-        dao.add(note);
-    }
-
-    @Override
-    public void updateById(String id, String text) {
-        List<Note> notes = dao.allNotes();
-        for (Note noteToUpdate : notes) {
-            if (noteToUpdate.getId().equals(id)) {
-                noteToUpdate.setText(text);
-            }
+        try {
+            creationDate = LocalDateTime.parse(date);
+        } catch (DateTimeParseException e) {
+            return "Неверно указана дата.";
         }
-    }
 
-    @Override
-    public void updateById(String id, String header, String text) {
-        List<Note> notes = dao.allNotes();
-        for (Note noteToUpdate : notes) {
-            if (noteToUpdate.getId().equals(id)) {
-                noteToUpdate.setHeader(header);
-                noteToUpdate.setText(text);
-            }
+        note = new Note(header, text, creationDate);
+        if (dao.add(note)) {
+            return dao.save()? "Запись успешно добавлена": dao.getActionWarning();
+        } else {
+            return "Не удалось добавить запись.";
         }
+
     }
 
     @Override
-    public void updateByIndex(int index, String text) {
-        if (index >= 0 && index + 1 <= dao.allNotes().size()) {
-            Note note = dao.allNotes().get(index);
-            note.setText(text);
+    public String updateByIndex(String number, String header, String text) {
+        int index = 0;
+        Note note;
+
+        try {
+            index = Integer.parseInt(number) - 1;
+            note = dao.allNotes().get(index);
+        } catch (NumberFormatException e) {
+            return "Указан неправильный номер.";
+        } catch (IndexOutOfBoundsException e) {
+            return "Неправильно указан номер.";
         }
-    }
-
-    @Override
-    public void updateByIndex(int index, String header, String text) {
-        if (index >= 0 && index + 1 <= dao.allNotes().size()) {
-            Note note = dao.allNotes().get(index);
             note.setHeader(header);
             note.setText(text);
-        }
+            return "Запись успешно обновлена";
     }
 
     @Override
-    public void delete(String id) {
-        List<Note> notes = dao.allNotes();
-        for (Note noteToUpdate : notes) {
-            if (noteToUpdate.getId().equals(id)) {
-                dao.delete(notes.indexOf(noteToUpdate));
-            }
+    public String delete(String number) {
+        int index = 0;
+        try {
+            index = Integer.parseInt(number) - 1;
+        } catch (NumberFormatException e) {
+            return "Неправильно указан номер.";
         }
+        return dao.delete(index)? "Запись успешно удалена": dao.getActionWarning();
     }
 
     @Override
-    public void delete(int index) {
-        if (index >= 0 && index + 1 <= dao.allNotes().size()) {
-            dao.delete(index);
-        }
-    }
-
-    @Override
-    public List<Note> find(String text){
+    public String find(String text){
         List<Note> result = new ArrayList<>();
         List<Note> notes = dao.allNotes();
 
@@ -108,7 +79,7 @@ public class NotebookLogicImpl implements NotebookLogic {
     }
 
     @Override
-    public List<Note> find(LocalDate date){
+    public String find(LocalDate date){
         List<Note> result = new ArrayList<>();
         List<Note> notes = dao.allNotes();
 
@@ -122,13 +93,13 @@ public class NotebookLogicImpl implements NotebookLogic {
     }
 
     @Override
-    public List<Note> getAllNotes() {
+    public String getAllNotes() {
         return dao.allNotes();
     }
 
     @Override
-    public void save() throws IOException {
-        dao.save();
+    public String save() {
+        return dao.save()? "Изменения сохранены": dao.getActionWarning();
     }
 
     private boolean isTextInNote(Note note, String text) {

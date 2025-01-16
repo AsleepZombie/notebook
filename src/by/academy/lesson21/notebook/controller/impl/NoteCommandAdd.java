@@ -4,9 +4,6 @@ import by.academy.lesson21.notebook.controller.Command;
 import by.academy.lesson21.notebook.logic.LogicProvider;
 import by.academy.lesson21.notebook.logic.NotebookLogic;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-
 public class NoteCommandAdd implements Command {
 
     private final LogicProvider logicProvider = LogicProvider.getInstance();
@@ -14,28 +11,14 @@ public class NoteCommandAdd implements Command {
 
     @Override
     public String execute(String[] params) {
-
-        switch (params.length) {
-            case 2:
-                logic.add(params[1]);
-                break;
-            case 3:
-                logic.add(params[2], params[1]);
-                break;
-            case 4:
-                logic.add(params[2], params[1], LocalDateTime.parse(params[3]));
-                break;
-            default:
-                return "Неверное количество параметров.";
+        if (params.length < 4) {
+            return "Неверное количество параметров.";
         }
-        try {
-            logic.save();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Запись не добавлена.";
-        }
+        String text = params[1];
+        String header = params[2];
+        String date = params[3];
 
-        return "Запись сохранена успешно.";
+        return logic.add(header, text, date);
     }
 
 }
