@@ -2,11 +2,12 @@ package by.academy.lesson21.notebook.entity;
 
 import by.academy.lesson21.notebook.util.IdGenerator;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class Note {
+public class Note implements Serializable {
     private final String id;
     private String header;
     private String text;

@@ -14,6 +14,8 @@ public class CommandProvider {
         repository.put(CommandName.FIND, new NoteCommandFind());
         repository.put(CommandName.SHOW, new NoteCommandShow());
         repository.put(CommandName.UPDATE, new NoteCommandUpdate());
+        repository.put(CommandName.READ, new NoteCommandRead());
+        repository.put(CommandName.SAVE, new NoteCommandSave());
 
         repository.put(CommandName.NONE, new NoteCommandNone());
     }

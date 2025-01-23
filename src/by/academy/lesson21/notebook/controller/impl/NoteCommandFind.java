@@ -1,12 +1,13 @@
 package by.academy.lesson21.notebook.controller.impl;
 
 import by.academy.lesson21.notebook.controller.Command;
-import by.academy.lesson21.notebook.entity.Note;
+import by.academy.lesson21.notebook.controller.CommandException;
 import by.academy.lesson21.notebook.logic.LogicProvider;
 import by.academy.lesson21.notebook.logic.NotebookLogic;
+import by.academy.lesson21.notebook.util.ParamHelper;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.format.DateTimeParseException;
 
 public class NoteCommandFind implements Command {
 
@@ -14,23 +15,25 @@ public class NoteCommandFind implements Command {
     private final NotebookLogic logic = logicProvider.getNotebookLogic();
 
     @Override
-    public String execute(String[] params) {
-        List<Note> notes;
-
-        if (params.length > 2) {
-            if (!params[1].isEmpty()) {
-                notes = logic.find(params[1]);
-            } else {
-                notes = logic.find(LocalDate.parse(params[2]));
-            }
-        } else {
+    public String execute(String[] params) throws CommandException {
+        if (params.length <= 2) {
             return "Неверное количество параметров.";
         }
-        if (!notes.isEmpty()) {
-            return notes.toString().replaceAll(", Note", "\n")
-                    .replaceAll("Note", "");
-        } else {
-            return "Ничего не найдено.";
+
+        String text = params[1];
+        String date = params[2];
+
+        if (text.isEmpty()) {
+            if (!ParamHelper.DATE_PATTERN.matcher(date).matches()) {
+                return "Неверный формат.";
+            }
+            try {
+                return logic.find(LocalDate.parse(date));
+            }
+            catch (DateTimeParseException e) {
+                throw new CommandException("Неправильно указана дата.", e);
+            }
         }
+        return logic.find(text);
     }
 }

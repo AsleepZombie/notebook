@@ -1,6 +1,7 @@
 package by.academy.lesson21.notebook.dao.impl;
 
 import by.academy.lesson21.notebook.dao.NoteBookDao;
+import by.academy.lesson21.notebook.dao.NoteBookException;
 import by.academy.lesson21.notebook.entity.Note;
 import by.academy.lesson21.notebook.util.ParamHelper;
 
@@ -12,11 +13,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileNoteBookDao implements NoteBookDao {
-    private final List<Note> notes = new ArrayList<>();
-    private String contentWarning;
-    private String actionWarning;
+    private final List<Note> notes;
 
     public FileNoteBookDao() {
+        notes = new ArrayList<>();
+    }
+
+    @Override
+    public void add(Note note) throws NoteBookException {
+        try {
+            notes.add(note);
+        } catch (UnsupportedOperationException | ClassCastException | IllegalArgumentException e) {
+            throw new NoteBookException("Не удвлось добавить запись", e);
+        } catch (RuntimeException e) {
+            throw new NoteBookException("Что-то пошло не так", e);
+        }
+    }
+
+    @Override
+    public void delete(int index) throws NoteBookException {
+        try {
+            notes.remove(index);
+        } catch (IndexOutOfBoundsException e) {
+            throw new NoteBookException("Неправильный номер", e);
+        } catch (RuntimeException e) {
+            throw new NoteBookException("Что-то пошло не так", e);
+        }
+    }
+
+    public void update(int index, Note note) throws NoteBookException {
+        try {
+            notes.set(index, note);
+        } catch (IndexOutOfBoundsException e) {
+            throw new NoteBookException("Неправильный номер", e);
+        } catch (RuntimeException e) {
+            throw new NoteBookException("Что-то пошло не так", e);
+        }
+    }
+
+    @Override
+    public List<Note> allNotes() {
+        return notes;
+    }
+
+    @Override
+    public void read() throws NoteBookException {
         try (RandomAccessFile reader = new RandomAccessFile(ParamHelper.filePath, "r")) {
             String line = reader.readLine();
 
@@ -35,52 +76,14 @@ public class FileNoteBookDao implements NoteBookDao {
                 line = reader.readLine();
             }
         } catch (FileNotFoundException e) {
-            contentWarning = "Файл не найден";
+            throw new NoteBookException("Файл не найден", e);
         } catch (IOException e) {
-            contentWarning = "Что-то пошло не так";
+            throw new NoteBookException("Что-то пошло не так", e);
         }
     }
 
     @Override
-    public boolean add(Note note) {
-        return notes.add(note);
-    }
-
-    @Override
-    public boolean delete(int index) {
-        try {
-            notes.remove(index);
-        } catch (IndexOutOfBoundsException e) {
-            actionWarning = "Неправильный номер";
-            return false;
-        } catch (RuntimeException e) {
-            actionWarning = "Что-то пошло не так";
-            return false;
-        }
-        return true;
-    }
-
-
-    public boolean update(int index, Note note) {
-        try {
-            notes.set(index, note);
-        } catch (IndexOutOfBoundsException e) {
-            actionWarning = "Неправильный номер";
-            return false;
-        } catch (RuntimeException e) {
-            actionWarning = "Что-то пошло не так";
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public List<Note> allNotes() {
-        return notes;
-    }
-
-    @Override
-    public boolean save() {
+    public void save() throws NoteBookException {
         int counter = 0;
         try (RandomAccessFile writer = new RandomAccessFile(ParamHelper.filePath, "rw")) {
             writer.setLength(0);
@@ -91,27 +94,9 @@ public class FileNoteBookDao implements NoteBookDao {
                 writer.writeBytes("\n" + note.getCreationDate());
             }
         }catch (FileNotFoundException e) {
-            actionWarning = contentWarning = "Файла больше не существует, создайте заново.";
-            return false;
+            throw new NoteBookException("Файла больше не существует, создайте заново.", e);
         } catch (IOException e) {
-            actionWarning = "Что-то пошло не так";
-            return false;
+            throw new NoteBookException("Что-то пошло не так", e);
         }
-        return true;
-    }
-
-    @Override
-    public boolean hasContentWarning() {
-        return !contentWarning.isEmpty();
-    }
-
-    @Override
-    public String getContentWarning() {
-        return contentWarning;
-    }
-
-    @Override
-    public String getActionWarning() {
-        return actionWarning;
     }
 }

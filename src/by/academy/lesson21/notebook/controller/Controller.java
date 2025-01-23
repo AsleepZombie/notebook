@@ -14,7 +14,11 @@ public class Controller {
         executionCommand = provider.getCommand(commandName.toUpperCase());
 
         String response;
-        response = executionCommand.execute(request.split("\n"));
+        try {
+            response = executionCommand.execute(request.split(String.valueOf(ParamHelper.delimiter)));
+        } catch (CommandException e) {
+            response = e.getMessage().split(": ")[1];
+        }
 
         return response;
     }

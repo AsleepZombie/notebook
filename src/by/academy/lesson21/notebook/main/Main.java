@@ -1,5 +1,6 @@
-package by.academy.lesson21;
+package by.academy.lesson21.notebook.main;
 
+import by.academy.lesson21.notebook.controller.CommandException;
 import by.academy.lesson21.notebook.controller.Controller;
 
 import java.io.BufferedReader;
@@ -13,6 +14,9 @@ public class Main {
         char result;
         Controller controller = new Controller();
 
+        request = "read\n ";
+        System.out.println(controller.readAndExecute(request));
+
         while (true) {
             System.out.print("1 - показать все записи, ");
             System.out.print("2 - добавить запись, ");
@@ -20,7 +24,12 @@ public class Main {
             System.out.print("4 - изменить запись, ");
             System.out.print("5 - найти записи, ");
             System.out.print("0 - выход: ");
-            result = reader.readLine().toLowerCase().charAt(0);
+            try {
+                result = reader.readLine().toLowerCase().charAt(0);
+            } catch (IndexOutOfBoundsException e) {
+                //it's alright;
+                result = '?';
+            }
             switch (result) {
                 case '1' -> {
                     request = "show\n ";
@@ -53,18 +62,24 @@ public class Main {
                 case '5' -> {
                     request = "find";
                     System.out.print("1 - поиск по тексту, ");
-                    System.out.print("2 - поиск по дате");
-                    result = reader.readLine().toLowerCase().charAt(0);
-                    if (result == '1') {
-                        System.out.print("Введите текст: ");
-                        request += "\n" + reader.readLine() + "\n ";
-                    } else if (result == '2') {
-                        System.out.print("Введите дату в формате (yyyy-mm-dd): ");
-                        request += "\n\n" + reader.readLine();
+                    System.out.print("2 - поиск по дате: ");
+                    try {
+                        result = reader.readLine().toLowerCase().charAt(0);
+                        if (result == '1') {
+                            System.out.print("Введите текст: ");
+                            request += "\n" + reader.readLine() + "\n ";
+                        } else if (result == '2') {
+                            System.out.print("Введите дату в формате (yyyy-mm-dd): ");
+                            request += "\n\n" + reader.readLine();
+                        }
+                        System.out.println(controller.readAndExecute(request));
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Ошибка ввода. Попробуйте ещё раз.");
                     }
-                    System.out.println(controller.readAndExecute(request));
                 }
                 case '0' -> {
+                    request = "save\n";
+                    System.out.println(controller.readAndExecute(request));
                     return;
                 }
                 default -> {

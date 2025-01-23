@@ -6,18 +6,14 @@ import java.util.List;
 
 public interface NoteBookDao {
 
-    boolean add(Note note);
+    void add(Note note) throws NoteBookException;
 
-    boolean delete(int index);
+    void delete(int index) throws NoteBookException;
 
     List<Note> allNotes();
 
-    boolean save();
+    void read() throws NoteBookException;
 
-    boolean hasContentWarning();
-
-    String getContentWarning();
-
-    String getActionWarning();
+    void save() throws NoteBookException;
 
 }
