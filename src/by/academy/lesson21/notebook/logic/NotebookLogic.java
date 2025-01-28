@@ -7,17 +7,15 @@ public interface NotebookLogic {
 
     public String add(String header, String text, LocalDateTime creationDate) throws NotebookLogicException;
 
-    public String updateByIndex(String number, String header, String text) throws NotebookLogicException;
+    public String updateByIndex(int index, String header, String text);
 
-    public String delete(String number) throws NotebookLogicException;
+    public String delete(int index);
 
     public String find(String text);
 
     public String find(LocalDate date);
 
     public String getAllNotes();
-
-    public String read() throws NotebookLogicException;
 
     public String save() throws NotebookLogicException;
 }

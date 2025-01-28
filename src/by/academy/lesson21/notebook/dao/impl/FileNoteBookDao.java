@@ -3,7 +3,7 @@ package by.academy.lesson21.notebook.dao.impl;
 import by.academy.lesson21.notebook.dao.NoteBookDao;
 import by.academy.lesson21.notebook.dao.NoteBookException;
 import by.academy.lesson21.notebook.entity.Note;
-import by.academy.lesson21.notebook.util.ParamHelper;
+import by.academy.lesson21.notebook.util.FileRequest;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,40 +15,23 @@ import java.util.List;
 public class FileNoteBookDao implements NoteBookDao {
     private final List<Note> notes;
 
-    public FileNoteBookDao() {
+    public FileNoteBookDao() throws NoteBookException {
         notes = new ArrayList<>();
+        read();
     }
 
     @Override
-    public void add(Note note) throws NoteBookException {
-        try {
-            notes.add(note);
-        } catch (UnsupportedOperationException | ClassCastException | IllegalArgumentException e) {
-            throw new NoteBookException("Не удвлось добавить запись", e);
-        } catch (RuntimeException e) {
-            throw new NoteBookException("Что-то пошло не так", e);
-        }
+    public void add(Note note) {
+        notes.add(note);
     }
 
     @Override
-    public void delete(int index) throws NoteBookException {
-        try {
-            notes.remove(index);
-        } catch (IndexOutOfBoundsException e) {
-            throw new NoteBookException("Неправильный номер", e);
-        } catch (RuntimeException e) {
-            throw new NoteBookException("Что-то пошло не так", e);
-        }
+    public void delete(int index) {
+        notes.remove(index);
     }
 
-    public void update(int index, Note note) throws NoteBookException {
-        try {
-            notes.set(index, note);
-        } catch (IndexOutOfBoundsException e) {
-            throw new NoteBookException("Неправильный номер", e);
-        } catch (RuntimeException e) {
-            throw new NoteBookException("Что-то пошло не так", e);
-        }
+    public void update(int index, Note note) {
+        notes.set(index, note);
     }
 
     @Override
@@ -56,9 +39,8 @@ public class FileNoteBookDao implements NoteBookDao {
         return notes;
     }
 
-    @Override
     public void read() throws NoteBookException {
-        try (RandomAccessFile reader = new RandomAccessFile(ParamHelper.filePath, "r")) {
+        try (RandomAccessFile reader = new RandomAccessFile(FileRequest.filePath, "r")) {
             String line = reader.readLine();
 
             String id;
@@ -85,7 +67,7 @@ public class FileNoteBookDao implements NoteBookDao {
     @Override
     public void save() throws NoteBookException {
         int counter = 0;
-        try (RandomAccessFile writer = new RandomAccessFile(ParamHelper.filePath, "rw")) {
+        try (RandomAccessFile writer = new RandomAccessFile(FileRequest.filePath, "rw")) {
             writer.setLength(0);
             for (Note note: notes){
                 writer.writeBytes((counter++ == 0 ? "" : "\n") + note.getId());

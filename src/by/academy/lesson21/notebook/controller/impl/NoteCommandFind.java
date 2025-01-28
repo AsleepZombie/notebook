@@ -4,10 +4,9 @@ import by.academy.lesson21.notebook.controller.Command;
 import by.academy.lesson21.notebook.controller.CommandException;
 import by.academy.lesson21.notebook.logic.LogicProvider;
 import by.academy.lesson21.notebook.logic.NotebookLogic;
-import by.academy.lesson21.notebook.util.ParamHelper;
+import by.academy.lesson21.notebook.util.Validator;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 public class NoteCommandFind implements Command {
 
@@ -24,16 +23,13 @@ public class NoteCommandFind implements Command {
         String date = params[2];
 
         if (text.isEmpty()) {
-            if (!ParamHelper.DATE_PATTERN.matcher(date).matches()) {
-                return "Неверный формат.";
+            if (!Validator.isValidDate(date)) {
+                return "Неправильно указана дата.";
             }
-            try {
-                return logic.find(LocalDate.parse(date));
-            }
-            catch (DateTimeParseException e) {
-                throw new CommandException("Неправильно указана дата.", e);
-            }
+
+            return logic.find(LocalDate.parse(date));
         }
+
         return logic.find(text);
     }
 }

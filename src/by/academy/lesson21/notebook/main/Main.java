@@ -14,8 +14,8 @@ public class Main {
         char result;
         Controller controller = new Controller();
 
-        request = "read\n ";
-        System.out.println(controller.readAndExecute(request));
+//        request = "read\n ";
+//        System.out.println(controller.readAndExecute(request));
 
         while (true) {
             System.out.print("1 - показать все записи, ");
@@ -23,6 +23,7 @@ public class Main {
             System.out.print("3 - удалить запись, ");
             System.out.print("4 - изменить запись, ");
             System.out.print("5 - найти записи, ");
+            System.out.print("6 - сохранить изменения, ");
             System.out.print("0 - выход: ");
             try {
                 result = reader.readLine().toLowerCase().charAt(0);
@@ -77,9 +78,11 @@ public class Main {
                         System.out.println("Ошибка ввода. Попробуйте ещё раз.");
                     }
                 }
-                case '0' -> {
+                case '6' -> {
                     request = "save\n";
                     System.out.println(controller.readAndExecute(request));
+                }
+                case '0' -> {
                     return;
                 }
                 default -> {
