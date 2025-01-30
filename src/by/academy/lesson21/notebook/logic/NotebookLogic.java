@@ -5,17 +5,17 @@ import java.time.LocalDateTime;
 
 public interface NotebookLogic {
 
-    public String add(String header, String text, LocalDateTime creationDate) throws NotebookLogicException;
+    public void add(String header, String text, LocalDateTime creationDate) throws NotebookLogicException;
 
-    public String updateByIndex(int index, String header, String text);
+    public void updateByIndex(int index, String header, String text) throws NotebookLogicException;
 
-    public String delete(int index);
+    public void delete(int index) throws NotebookLogicException;
 
     public String find(String text);
 
     public String find(LocalDate date);
 
-    public String getAllNotes();
+    public String getAllNotes() throws NotebookLogicException;
 
-    public String save() throws NotebookLogicException;
+    public void save() throws NotebookLogicException;
 }

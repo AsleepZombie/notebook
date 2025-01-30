@@ -11,8 +11,15 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String request;
+        String resultString;
         char result;
-        Controller controller = new Controller();
+        Controller controller;
+        try {
+            controller = new Controller();
+        } catch (Exception e) {
+            System.out.println("Не удалось считать данные");
+            return;
+        }
 
 //        request = "read\n ";
 //        System.out.println(controller.readAndExecute(request));
@@ -25,11 +32,12 @@ public class Main {
             System.out.print("5 - найти записи, ");
             System.out.print("6 - сохранить изменения, ");
             System.out.print("0 - выход: ");
-            try {
-                result = reader.readLine().toLowerCase().charAt(0);
-            } catch (IndexOutOfBoundsException e) {
+            resultString = reader.readLine().toLowerCase();
+            if (resultString.isEmpty()) {
                 //it's alright;
                 result = '?';
+            } else {
+                result = resultString.charAt(0);
             }
             switch (result) {
                 case '1' -> {

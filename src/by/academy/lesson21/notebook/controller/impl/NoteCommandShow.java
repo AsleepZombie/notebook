@@ -4,6 +4,7 @@ import by.academy.lesson21.notebook.controller.Command;
 import by.academy.lesson21.notebook.controller.CommandException;
 import by.academy.lesson21.notebook.logic.LogicProvider;
 import by.academy.lesson21.notebook.logic.NotebookLogic;
+import by.academy.lesson21.notebook.logic.NotebookLogicException;
 
 public class NoteCommandShow implements Command {
 
@@ -13,6 +14,10 @@ public class NoteCommandShow implements Command {
     @Override
     public String execute(String[] params) throws CommandException {
 
-        return logic.getAllNotes();
+        try {
+            return logic.getAllNotes();
+        } catch (NotebookLogicException e) {
+            throw new CommandException(e);
+        }
     }
 }

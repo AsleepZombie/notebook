@@ -20,36 +20,31 @@ public class NotebookLogicImpl implements NotebookLogic {
     }
 
     @Override
-    public String add(String header, String text, LocalDateTime creationDate) {
+    public void add(String header, String text, LocalDateTime creationDate) {
         Note note;
 
         note = new Note(header, text, creationDate);
         dao.add(note);
-
-        return "Запись успешно добавлена.";
     }
 
     @Override
-    public String updateByIndex(int index, String header, String text) {
+    public void updateByIndex(int index, String header, String text) throws NotebookLogicException {
         Note note;
 
         if (index + 1 > dao.allNotes().size()) {
-            return "Неправильно указан номер.";
+            throw new NotebookLogicException("Неправильно указан номер.");
         }
         note = dao.allNotes().get(index);
         note.setHeader(header);
         note.setText(text);
-
-        return "Запись успешно обновлена";
     }
 
     @Override
-    public String delete(int index) {
+    public void delete(int index) throws NotebookLogicException {
         if (index + 1 > dao.allNotes().size()) {
-            return "Неправильно указан номер.";
+            throw new NotebookLogicException("Неправильно указан номер.");
         }
             dao.delete(index);
-        return "Запись успешно удалена";
     }
 
     @Override
@@ -58,7 +53,8 @@ public class NotebookLogicImpl implements NotebookLogic {
         List<Note> notes = dao.allNotes();
 
         if (notes.isEmpty()) {
-            return "Блокнот не имеет записей";
+            //return "Блокнот не имеет записей";
+            return "";
         }
 
         for(Note note : notes) {
@@ -67,7 +63,8 @@ public class NotebookLogicImpl implements NotebookLogic {
             }
         }
 
-        return result.isEmpty()? "Ничего не найдено.": noteToString(result);
+        //return result.isEmpty()? "Ничего не найдено.": noteToString(result);
+        return result.isEmpty()? "": noteToString(result);
     }
 
     @Override
@@ -76,7 +73,8 @@ public class NotebookLogicImpl implements NotebookLogic {
         List<Note> notes = dao.allNotes();
 
         if (notes.isEmpty()) {
-            return "Блокнот не имеет записей";
+            //return "Блокнот не имеет записей";
+            return "";
         }
 
         for (Note note : notes) {
@@ -85,29 +83,28 @@ public class NotebookLogicImpl implements NotebookLogic {
             }
         }
 
-        return result.isEmpty()? "Ничего не найдено.": noteToString(result);
+        //return result.isEmpty()? "Ничего не найдено.": noteToString(result);
+        return result.isEmpty()? "": noteToString(result);
     }
 
     @Override
-    public String getAllNotes() {
+    public String getAllNotes() throws NotebookLogicException {
         List<Note> notes = dao.allNotes();
 
         if (notes.isEmpty()) {
-            return "Блокнот не имеет записей";
+            throw new NotebookLogicException("Блокнот не имеет записей");
         }
 
         return noteToString(notes);
     }
 
     @Override
-    public String save() throws NotebookLogicException {
+    public void save() throws NotebookLogicException {
         try {
             dao.save();
         } catch (NoteBookException e) {
             throw new NotebookLogicException(e);
         }
-
-        return "Изменения сохранены.";
     }
 
     private boolean isTextInNote(Note note, String text) {

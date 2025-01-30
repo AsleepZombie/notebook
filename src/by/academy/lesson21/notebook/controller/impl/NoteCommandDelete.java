@@ -4,6 +4,7 @@ import by.academy.lesson21.notebook.controller.Command;
 import by.academy.lesson21.notebook.controller.CommandException;
 import by.academy.lesson21.notebook.logic.LogicProvider;
 import by.academy.lesson21.notebook.logic.NotebookLogic;
+import by.academy.lesson21.notebook.logic.NotebookLogicException;
 import by.academy.lesson21.notebook.util.Validator;
 
 public class NoteCommandDelete implements Command {
@@ -14,14 +15,21 @@ public class NoteCommandDelete implements Command {
     @Override
     public String execute(String[] params) throws CommandException {
         if (params.length < 2) {
-            return "Неверное количество параметров.";
+            throw new CommandException("Неверное количество параметров.");
         }
         String number = params[1];
         int indexNumber = Validator.ValidateIndex(number);
         if (indexNumber == Validator.WRONG_INDEX) {
-            return "Неправильно указан индекс.";
+            throw new CommandException("Неправильно указан индекс.");
         }
         int index = indexNumber -1;
-        return logic.delete(index);
+
+        try {
+            logic.delete(index);
+        } catch (NotebookLogicException e) {
+            throw new CommandException(e);
+        }
+
+        return "Запись успешно удалена";
     }
 }

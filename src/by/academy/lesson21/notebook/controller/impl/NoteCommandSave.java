@@ -15,9 +15,11 @@ public class NoteCommandSave implements Command {
     public String execute(String[] params) throws CommandException {
 
         try {
-            return logic.save();
+            logic.save();
         } catch (NotebookLogicException e) {
             throw new CommandException(e);
         }
+
+        return "Изменения сохранены.";
     }
 }

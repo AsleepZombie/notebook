@@ -4,6 +4,7 @@ import by.academy.lesson21.notebook.controller.Command;
 import by.academy.lesson21.notebook.controller.CommandException;
 import by.academy.lesson21.notebook.logic.LogicProvider;
 import by.academy.lesson21.notebook.logic.NotebookLogic;
+import by.academy.lesson21.notebook.logic.NotebookLogicException;
 import by.academy.lesson21.notebook.util.Validator;
 
 public class NoteCommandUpdate implements Command {
@@ -13,18 +14,24 @@ public class NoteCommandUpdate implements Command {
     @Override
     public String execute(String[] params) throws CommandException {
         if (params.length < 4) {
-            return "Неверное количество параметров.";
+            throw new CommandException("Неверное количество параметров.");
         }
         String number = params[1];
         int indexNumber = Validator.ValidateIndex(number);
         if (indexNumber == Validator.WRONG_INDEX) {
-            return "Неправильно указан индекс.";
+            throw new CommandException("Неправильно указан индекс.");
         }
-        int index = indexNumber -1;
+        int index = indexNumber - 1;
         String text = Validator.correctText(params[2]);
         String header = Validator.correctHeader(params[3]);
 
-        return logic.updateByIndex(index, header, text);
+        try {
+            logic.updateByIndex(index, header, text);
+        } catch (NotebookLogicException e) {
+            throw new CommandException(e);
+        }
+
+        return "Запись успешно обновлена";
     }
 
 }

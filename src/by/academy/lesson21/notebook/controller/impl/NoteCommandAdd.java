@@ -17,17 +17,19 @@ public class NoteCommandAdd implements Command {
     @Override
     public String execute(String[] params) throws CommandException {
         if (params.length < 3) {
-            return "Неверное количество параметров.";
+            throw new CommandException("Неверное количество параметров.");
         }
         String text = Validator.correctText(params[1]);
         String header = Validator.correctHeader(params[2]);
         LocalDateTime date = LocalDateTime.now();
 
         try {
-            return logic.add(header, text, date);
+            logic.add(header, text, date);
         } catch (NotebookLogicException e) {
             throw new CommandException(e);
         }
+
+        return "Запись успешно добавлена.";
     }
 
 }
