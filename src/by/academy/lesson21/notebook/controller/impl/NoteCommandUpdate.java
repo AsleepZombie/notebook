@@ -14,12 +14,14 @@ public class NoteCommandUpdate implements Command {
     @Override
     public String execute(String[] params) throws CommandException {
         if (params.length < 4) {
-            throw new CommandException("Неверное количество параметров.");
+            //throw new CommandException("Неверное количество параметров.");
+            throw new CommandException("Wrong param length.");
         }
         String number = params[1];
         int indexNumber = Validator.ValidateIndex(number);
         if (indexNumber == Validator.WRONG_INDEX) {
-            throw new CommandException("Неправильно указан индекс.");
+            //throw new CommandException("Неправильно указан индекс.");
+            throw new CommandException("Wrong index.");
         }
         int index = indexNumber - 1;
         String text = Validator.correctText(params[2]);

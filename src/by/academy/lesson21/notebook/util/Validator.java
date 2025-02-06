@@ -2,7 +2,7 @@ package by.academy.lesson21.notebook.util;
 
 import java.util.regex.Pattern;
 
-public class Validator {
+public final class Validator {
     private static final Pattern INDEX_PATTERN = Pattern.compile("^\\d$");
     private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
     private static final Pattern HEADER_PATTERN = Pattern.compile("[^\\da-zA-Zа-яёА-ЯЁ ]");

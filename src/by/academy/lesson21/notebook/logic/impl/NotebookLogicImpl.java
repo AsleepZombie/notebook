@@ -32,7 +32,8 @@ public class NotebookLogicImpl implements NotebookLogic {
         Note note;
 
         if (index + 1 > dao.allNotes().size()) {
-            throw new NotebookLogicException("Неправильно указан номер.");
+            //throw new NotebookLogicException("Неправильно указан номер.");
+            throw new NotebookLogicException("Wrong number.");
         }
         note = dao.allNotes().get(index);
         note.setHeader(header);
@@ -42,7 +43,8 @@ public class NotebookLogicImpl implements NotebookLogic {
     @Override
     public void delete(int index) throws NotebookLogicException {
         if (index + 1 > dao.allNotes().size()) {
-            throw new NotebookLogicException("Неправильно указан номер.");
+            //throw new NotebookLogicException("Неправильно указан номер.");
+            throw new NotebookLogicException("Wrong number.");
         }
             dao.delete(index);
     }
@@ -92,7 +94,8 @@ public class NotebookLogicImpl implements NotebookLogic {
         List<Note> notes = dao.allNotes();
 
         if (notes.isEmpty()) {
-            throw new NotebookLogicException("Блокнот не имеет записей");
+            //throw new NotebookLogicException("Блокнот не имеет записей");
+            throw new NotebookLogicException("No records");
         }
 
         return noteToString(notes);

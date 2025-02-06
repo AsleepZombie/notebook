@@ -16,7 +16,8 @@ public class NoteCommandFind implements Command {
     @Override
     public String execute(String[] params) throws CommandException {
         if (params.length <= 2) {
-            throw new CommandException("Неверное количество параметров.");
+            //throw new CommandException("Неверное количество параметров.");
+            throw new CommandException("Wrong param length.");
         }
 
         String text = params[1];
@@ -25,13 +26,14 @@ public class NoteCommandFind implements Command {
 
         if (text.isEmpty()) {
             if (!Validator.isValidDate(date)) {
-                throw new CommandException("Неправильно указана дата.");
+                //throw new CommandException("Неправильно указана дата.");
+                throw new CommandException("Wrong date.");
             }
 
             result = logic.find(LocalDate.parse(date));
+        } else {
+            result = logic.find(text);
         }
-
-        result = logic.find(text);
 
         return result.isEmpty()? "Ничего не найдено.": result;
     }

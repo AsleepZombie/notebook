@@ -17,7 +17,8 @@ public class NoteCommandAdd implements Command {
     @Override
     public String execute(String[] params) throws CommandException {
         if (params.length < 3) {
-            throw new CommandException("Неверное количество параметров.");
+            //throw new CommandException("Неверное количество параметров.");
+            throw new CommandException("Wrong param length.");
         }
         String text = Validator.correctText(params[1]);
         String header = Validator.correctHeader(params[2]);

@@ -58,9 +58,11 @@ public class FileNoteBookDao implements NoteBookDao {
                 line = reader.readLine();
             }
         } catch (FileNotFoundException e) {
-            throw new NoteBookException("Файл не найден", e);
+            //throw new NoteBookException("Файл не найден", e);
+            throw new NoteBookException("File not found", e);
         } catch (IOException e) {
-            throw new NoteBookException("Что-то пошло не так", e);
+            //throw new NoteBookException("Что-то пошло не так", e);
+            throw new NoteBookException("Something went wrong", e);
         }
     }
 
@@ -76,9 +78,11 @@ public class FileNoteBookDao implements NoteBookDao {
                 writer.writeBytes("\n" + note.getCreationDate());
             }
         }catch (FileNotFoundException e) {
-            throw new NoteBookException("Файла больше не существует, создайте заново.", e);
+            //throw new NoteBookException("Файла больше не существует, создайте заново.", e);
+            throw new NoteBookException("File not found", e);
         } catch (IOException e) {
-            throw new NoteBookException("Что-то пошло не так", e);
+            //throw new NoteBookException("Что-то пошло не так", e);
+            throw new NoteBookException("Something went wrong", e);
         }
     }
 }
