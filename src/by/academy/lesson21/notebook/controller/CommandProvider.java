@@ -11,7 +11,8 @@ public class CommandProvider {
     CommandProvider(){
         repository.put(CommandName.ADD, new NoteCommandAdd());
         repository.put(CommandName.DELETE, new NoteCommandDelete());
-        repository.put(CommandName.FIND, new NoteCommandFind());
+        repository.put(CommandName.FIND_TEXT, new NoteCommandFindText());
+        repository.put(CommandName.FIND_BY_DATE, new NoteCommandFindByDate());
         repository.put(CommandName.SHOW, new NoteCommandShow());
         repository.put(CommandName.UPDATE, new NoteCommandUpdate());
         repository.put(CommandName.SAVE, new NoteCommandSave());
@@ -20,8 +21,9 @@ public class CommandProvider {
     }
 
     Command getCommand(String name){
-        CommandName commandName =null;
-        Command command = null;
+        CommandName commandName;
+        Command command;
+
 
         try{
             commandName = CommandName.valueOf(name.toUpperCase());

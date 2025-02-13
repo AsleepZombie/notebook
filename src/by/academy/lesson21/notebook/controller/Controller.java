@@ -18,7 +18,7 @@ public class Controller {
             response = executionCommand.execute(request.split(String.valueOf(CommandUtil.COMMAND_DELIMITER)));
         } catch (CommandException e) {
             //response = e.getMessage().split(": ")[1];
-            response = "Что-то пошло не так, попробуйте позже";
+            response = "Что-то пошло не так, попробуйте позже.";
         }
 
         return response;

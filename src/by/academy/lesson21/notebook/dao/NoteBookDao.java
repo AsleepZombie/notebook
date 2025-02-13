@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface NoteBookDao {
 
-    void add(Note note);
+    void add(Note note) throws NoteBookException;
 
-    void delete(int index);
+    void delete(int index) throws NoteBookException;
 
-    List<Note> allNotes();
+    List<Note> allNotes() throws NoteBookException;
 
     void save() throws NoteBookException;
 }

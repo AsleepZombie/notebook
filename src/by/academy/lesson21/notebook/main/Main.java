@@ -1,6 +1,5 @@
 package by.academy.lesson21.notebook.main;
 
-import by.academy.lesson21.notebook.controller.CommandException;
 import by.academy.lesson21.notebook.controller.Controller;
 
 import java.io.BufferedReader;
@@ -76,10 +75,10 @@ public class Main {
                         result = reader.readLine().toLowerCase().charAt(0);
                         if (result == '1') {
                             System.out.print("Введите текст: ");
-                            request += "\n" + reader.readLine() + "\n ";
+                            request += "_text\n" + reader.readLine();
                         } else if (result == '2') {
                             System.out.print("Введите дату в формате (yyyy-mm-dd): ");
-                            request += "\n\n" + reader.readLine();
+                            request += "_by_date\n" + reader.readLine();
                         }
                         System.out.println(controller.readAndExecute(request));
                     } catch (IndexOutOfBoundsException e) {

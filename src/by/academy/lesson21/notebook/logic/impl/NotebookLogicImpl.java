@@ -20,39 +20,65 @@ public class NotebookLogicImpl implements NotebookLogic {
     }
 
     @Override
-    public void add(String header, String text, LocalDateTime creationDate) {
+    public void add(String header, String text, LocalDateTime creationDate) throws NotebookLogicException {
         Note note;
 
         note = new Note(header, text, creationDate);
-        dao.add(note);
+        try {
+            dao.add(note);
+        } catch (NoteBookException e) {
+            throw new NotebookLogicException(e);
+        }
     }
 
     @Override
     public void updateByIndex(int index, String header, String text) throws NotebookLogicException {
+        List<Note> notes;
         Note note;
 
-        if (index + 1 > dao.allNotes().size()) {
+        try {
+            notes = dao.allNotes();
+        } catch (NoteBookException e) {
+            throw new NotebookLogicException(e);
+        }
+
+        if (index + 1 > notes.size()) {
             //throw new NotebookLogicException("Неправильно указан номер.");
             throw new NotebookLogicException("Wrong number.");
         }
-        note = dao.allNotes().get(index);
+        note = notes.get(index);
         note.setHeader(header);
         note.setText(text);
     }
 
     @Override
     public void delete(int index) throws NotebookLogicException {
-        if (index + 1 > dao.allNotes().size()) {
-            //throw new NotebookLogicException("Неправильно указан номер.");
-            throw new NotebookLogicException("Wrong number.");
-        }
+        List<Note> notes;
+
+        try {
+            notes = dao.allNotes();
+
+            if (index + 1 > notes.size()) {
+                //throw new NotebookLogicException("Неправильно указан номер.");
+                throw new NotebookLogicException("Wrong number.");
+            }
+
             dao.delete(index);
+        } catch (NoteBookException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public String find(String text) {
+    public String find(String text) throws NotebookLogicException {
         List<Note> result = new ArrayList<>();
-        List<Note> notes = dao.allNotes();
+        List<Note> notes;
+
+        try {
+            notes = dao.allNotes();
+        } catch (NoteBookException e) {
+            throw new NotebookLogicException(e);
+        }
 
         if (notes.isEmpty()) {
             //return "Блокнот не имеет записей";
@@ -70,9 +96,15 @@ public class NotebookLogicImpl implements NotebookLogic {
     }
 
     @Override
-    public String find(LocalDate date) {
+    public String find(LocalDate date) throws NotebookLogicException {
         List<Note> result = new ArrayList<>();
-        List<Note> notes = dao.allNotes();
+        List<Note> notes;
+
+        try {
+            notes = dao.allNotes();
+        } catch (NoteBookException e) {
+            throw new NotebookLogicException(e);
+        }
 
         if (notes.isEmpty()) {
             //return "Блокнот не имеет записей";
@@ -91,7 +123,13 @@ public class NotebookLogicImpl implements NotebookLogic {
 
     @Override
     public String getAllNotes() throws NotebookLogicException {
-        List<Note> notes = dao.allNotes();
+        List<Note> notes;
+
+        try {
+            notes = dao.allNotes();
+        } catch (NoteBookException e) {
+            throw new NotebookLogicException(e);
+        }
 
         if (notes.isEmpty()) {
             //throw new NotebookLogicException("Блокнот не имеет записей");
